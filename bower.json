@@ -1,8 +1,11 @@
 {
   "name": "ui-router-utility",
-  "private": true,
+  "private": false,
   "dependencies": {
-    "jquery": "~1.11.0"
+    "jquery": "~1.11.0",
+     "angular-ui-router": "~0.2.10",
+     "angular": "~1.2.16",
+     "lodash": "~2.4.1"
   },
   "devDependencies": {}
 }
