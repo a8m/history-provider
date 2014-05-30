@@ -12,7 +12,7 @@ function $HistoryProvider(){
             history.push({state: fromState, params: fromParams});
         });
         function getPreviousState(){
-            return history[history.length-1] || null;
+            return _.last(history) || null;
         }
 
         function transitionToPrevious(){
