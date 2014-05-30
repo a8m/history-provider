@@ -6,3 +6,6 @@ bower_components
 test/bower_components
 app
 bower_components
+idea
+.idea
+.idea/workspace.xml
