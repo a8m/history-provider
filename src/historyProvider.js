@@ -1,37 +1,43 @@
 /**
+ * Created by Ariel Mashraki
  * $historyProvider let you get an access to previous states/mode in your app,
  * when your state not depends on url
  */
-function $HistoryProvider(){
+function HistoryProvider() {
 
-    this.$get = function($state, $rootScope){
-        var history = [];
-        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-            event.preventDefault();
-            if(fromState.abstract) return;
-            history.push({state: fromState, params: fromParams});
-        });
-        function getPreviousState(){
-            return _.last(history) || null;
-        }
+  this.$get = function($state, $rootScope) {
 
-        function transitionToPrevious(){
-            var prev = history.pop();
-            if(!prev) throw new Error('there no previous state');
+    var history = [], onAction = false;
 
-            if(_.isEmpty(prev.params))
-                return $state.go(prev.state.name);
-            else
-                return $state.go(prev.state.name ,prev.params);
-        }
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      if(fromState.abstract || onAction) return;
+      history.push({state: fromState, params: fromParams});
+    });
 
-        return {
-            getPrevState: getPreviousState,
-            goPrevState: transitionToPrevious
-        }
+    $rootScope.$on('$stateChangeSuccess', function() {
+      onAction = false;
+    });
+
+    function getPreviousState() {
+      return _.last(history) || null;
+    }
+
+    function transitionToPrevious() {
+      onAction = true;
+      var prev = history.pop();
+      if(!prev) return false;
+
+      if(_.isEmpty(prev.params))
+        return $state.go(prev.state.name);
+      else
+        return $state.go(prev.state.name ,prev.params);
+    }
+
+    return {
+      getPrevState: getPreviousState,
+      goPrevState: transitionToPrevious
     };
 
-};
+  };
 
-angular.module('ui.router.utility', [])
-    .provider('$history', $HistoryProvider);
+}
