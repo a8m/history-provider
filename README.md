@@ -1,6 +1,3 @@
-#UI-router-utility
-
----
 ##Table of contents:
 
 - [$historyProvider](#historyProvider)
